@@ -9,8 +9,6 @@
 		$uname = $_POST['uname'];
 		$email = $_POST['email'];
 		$cell = $_POST['cell'];
-		$pass = $_POST['pass'];
-		$cpass = $_POST['cpass'];
 		if(isset($_POST['gender'])){
 			$gender = $_POST['gender'];
 		}
@@ -21,45 +19,27 @@
 
 		// password convert to hash
 
-		$hash_pass = password_hash($pass , PASSWORD_DEFAULT);
+		// $hash_pass = password_hash($pass , PASSWORD_DEFAULT);
 
 		//email , username , cell number check
 
-		$email_check =    emailcheck("info","email","$email");
+		// $email_check =    emailcheck("info","email","$email");
 
-		$username_check =  emailcheck("info","uname","$uname");
+		// $username_check =  emailcheck("info","uname","$uname");
 
-		$cell_check =      emailcheck("info","cell","$cell");
+		// $cell_check =      emailcheck("info","cell","$cell");
 
 		
 		// validation message code start here
 
-		if(empty($name) || empty ($uname)|| empty ($email)|| empty ($cell)|| empty ($gender)|| empty ($pass)|| empty ($location))
+		if(empty($name) || empty ($uname)|| empty ($email)|| empty ($cell)|| empty ($gender)||  empty ($location))
 		{
 			$mess = error ('all fields are required') ;
 
-		}elseif(!Filter_var($email, FILTER_VALIDATE_EMAIL)){
+		}elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 
 			$mess = error ('invalid email address') ;
 
-		}elseif(strlen($pass) <= 3){
-
-			$mess = error ('password must be in 4 cheracters or long') ;
-			
-		}elseif($email_check > 1){
-
-			$mess = error ('email already exit') ;
-			
-		}elseif($username_check > 1){
-
-			$mess = error ('username already exit') ;
-			
-		}elseif($cell_check > 1){
-
-			$mess = error ('cell already exit') ;
-			
-		}elseif ($pass != $cpass) {
-			$mess = error ('password not match') ;
 		}else{
 			// profile file upload 
 			$photos ='';
@@ -83,7 +63,7 @@
 			}
 			// data update into mysql database
 
-			$way -> query ("UPDATE info SET name ='$name' , email = '$email', cell = '$cell', uname='$uname', gender='$gender', location='$location' , $pass='$hash_pass' , profile='$photos' , cover = '$cphotos' WHERE id='$edit_id'");
+			$way -> query ("UPDATE info SET name ='$name' , email = '$email', cell = '$cell', uname='$uname', gender='$gender', location='$location' , profile='$photos' , cover = '$cphotos' WHERE id='$edit_id'");
 
 		}
 
@@ -140,14 +120,6 @@
 					<div class="form-group">
 						<label for="">Cell</label>
 						<input class="form-control" type="text" name="cell" value="<?php echo $all_edit['cell']?>">
-					</div>
-					<div class="form-group">
-						<label for="">password</label>
-						<input class="form-control" type="password" name="pass">
-					</div>
-					<div class="form-group">
-						<label for="">Confirm Password</label>
-						<input class="form-control" type="password" name="cpass">
 					</div>
 					<div class="form-group">
 						<label for="">Profile Picture</label> <br>
