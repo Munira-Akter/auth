@@ -9,6 +9,27 @@
 		unlink('photos/cover/' . $cover);
 		header('location:users.php');
 	}
+
+?>
+<?php
+
+if (isset($_GET['active_id'])) {
+	$active = $_GET['active_id'];
+	$data = $way -> query("SELECT * FROM info WHERE id='$active'");
+	$active_data = $data -> fetch_assoc();
+	if ($active_data['status'] == 'active') {
+		$way -> query("UPDATE info SET status='inactive'");
+	}
+}
+if (isset($_GET['inactive_id'])) {
+	$inactive = $_GET['inactive_id'];
+	$data = $way -> query("SELECT * FROM info WHERE id='$inactive'");
+	$inactive_data = $data -> fetch_assoc();
+	if ($inactive_data['status'] == 'inactive') {
+		$way -> query("UPDATE info SET status='active'");
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +40,7 @@
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="assets/css/style.css">
 	<link rel="stylesheet" href="assets/css/responsive.css">
+	<link rel="stylesheet" href="assets/css/all.min.css">
 </head>
 <body>
 
@@ -65,12 +87,17 @@
 							<td><?php echo $users['cell'];?></td>
 							<td><?php echo $users['gender'];?></td>
 							<td><?php echo $users['location'];?></td>
-							<td><img src="photos/profile/<?php echo $users['profile']?>" alt=""></td>
-							<td><img src="photos/cover/<?php echo $users['cover'] ?>" alt=""></td>
+							<td><img style="border-radius: 50%;" src="photos/profile/<?php echo $users['profile']?>" alt=""></td>
+							<td><img style="border-radius: 50%;" src="photos/cover/<?php echo $users['cover'] ?>" alt=""></td>
 							<td>
 								<?php if($users['id'] == $_SESSION['user_id']): ?>
-								<a class="btn btn-sm btn-warning" href="edit.php?edit_id=<?php echo $users['id'];?>">Edit</a>
-								<a class="btn btn-sm btn-danger delete" href="?delete_id=<?php echo $users['id'];?>&profile=<?php echo $users['profile'];?>&cover=<?php echo $users['cover'];?>">Delete</a>
+								<a class="btn btn-sm btn-warning" href="edit.php?edit_id=<?php echo $users['id'];?>"><i class="fas fa-edit"></i></a>
+								 <?php if ($users['status'] == 'active'): 	?>
+									<a class="btn btn-sm btn-success" href="?active_id=<?php echo $users['id'];?>"><i class="fas fa-user-check"></i></a>
+								<?php	elseif ($users['status'] == 'inactive'): ?>
+									<a class="btn btn-sm btn-danger" href="?inactive_id=<?php echo $users['id'];?>"><i class="fas fa-user-times"></i></a>
+								<?php endif; ?>
+								<a class="btn btn-sm btn-danger delete" href="?delete_id=<?php echo $users['id'];?>&profile=<?php echo $users['profile'];?>&cover=<?php echo $users['cover'];?>"><i class="fas fa-user-minus"></i></a>
 								<?php else: ?>
 								<a class="btn btn-sm btn-info" href="profile.php?profile_id=<?php echo $users['id'];?>">View</a>
 								<?php endif; ?>

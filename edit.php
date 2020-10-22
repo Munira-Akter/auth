@@ -17,18 +17,7 @@
 			$mess = error ('you have to agree first') ;
 		}
 
-		// password convert to hash
-
-		// $hash_pass = password_hash($pass , PASSWORD_DEFAULT);
-
-		//email , username , cell number check
-
-		// $email_check =    emailcheck("info","email","$email");
-
-		// $username_check =  emailcheck("info","uname","$uname");
-
-		// $cell_check =      emailcheck("info","cell","$cell");
-
+		
 		
 		// validation message code start here
 
